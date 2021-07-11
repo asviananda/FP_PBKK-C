@@ -17,6 +17,18 @@
             <a href="<?= base_url() ?>" class="nav-link">Home</a>
           </li>
 
+          <?php $artis = $this->m_home->get_all_data_artis(); ?>
+          <li class="nav-item dropdown">
+            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" 
+            aria-expanded="false" class="nav-link dropdown-toggle">Artist</a>
+            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+            <?php foreach ($artis as $key => $value) { ?>
+              <li><a href="<?= base_url('home/artis/'.$value->id_artis) ?>" class="dropdown-item"><?= $value->nama_artis ?> </a></li>
+            <?php }; ?>
+              
+            </ul>
+          </li>
+
           <?php $kategori = $this->m_home->get_all_data_kategori(); ?>
 
           <li class="nav-item dropdown">
@@ -75,7 +87,8 @@
           </div>
         </li>
 
-        <?php $keranjang = $this->cart->contents();
+        <?php 
+        $keranjang = $this->cart->contents();
         $jml_item = 0;
         foreach ($keranjang as $key => $value){
           $jml_item = $jml_item + $value['qty'];
@@ -87,22 +100,47 @@
             <span class="badge badge-danger navbar-badge"><?= $jml_item ?></span>
           </a>
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+          <?php if (empty($keranjang)) {?>
+            <a href="#" class="dropdown-item">
+            <p>Cart is empty</p>
+            </a>
+          <?php }else{
+            foreach ($keranjang as $key => $value) {
+              $barang = $this->m_home->detail_barang($value['id']);
+              ?>
+          
           <!-- Barang Start -->
             <a href="#" class="dropdown-item">
               <div class="media">
-                <img src="<?= base_url() ?>template/dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                <img src="<?= base_url('assets/gambar/'. $barang->gambar) ?>" alt="User Avatar" class="img-size-50 mr-3">
                 <div class="media-body">
                   <h3 class="dropdown-item-title">
-                    Brad Diesel
+                    <?= $value['name'] ?>
                   </h3>
-                  <p class="text-sm">Call me whenever you can...</p>
-                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                  <p class="text-sm"><?= $value['qty'] ?> x Rp.<?= number_format($value['price'],0) ?></p>
+                  <p class="text-sm text-muted"><i class="fa fa-calculator"></i> Rp.<?= $this->cart->format_number($value['subtotal']); ?></p>
                 </div>
               </div>
             </a>
-             <!-- Barang End -->
             <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+            <?php } ?> 
+             <!-- Barang End -->
+             <a href="#" class="dropdown-item">
+              <div class="media">
+                <div class="media-body">
+                  <tr>
+                    <td colspan="2"></td>
+                    <td class="right"><strong>total</strong></td>
+                    <td class="right">Rp.<?= $this->cart->format_number($this->cart->total()); ?></td>
+                  </tr>
+                </div>
+              </div>
+            </a>
+
+            <div class="dropdown-divider"></div>
+            <a href="<?= base_url('belanja') ?>" class="dropdown-item dropdown-footer">View Cart</a>
+            <a href="#" class="dropdown-item dropdown-footer">Check Out</a>
+            <?php }?>
           </div>
         </li>
       </ul>

@@ -8,8 +8,19 @@ class M_barang extends CI_Model
         $this->db->select('*');
         $this->db->from('tbl_barang');
         $this->db->join('tbl_kategori', 'tbl_kategori.id_kategori = tbl_barang.id_kategori', 'left');
+        $this->db->join('tbl_artis', 'tbl_artis.id_artis = tbl_barang.id_artis', 'left');
         $this->db->order_by('tbl_barang.id_barang', 'asc');
         return $this->db->get()->result();
+    }
+
+    public function get_data($id_barang)
+    {
+        $this->db->select('*');
+        $this->db->from('tbl_barang');
+        $this->db->join('tbl_kategori', 'tbl_kategori.id_kategori = tbl_barang.id_kategori', 'left');
+        $this->db->join('tbl_artis', 'tbl_artis.id_artis = tbl_barang.id_artis', 'left');
+        $this->db->where('id_barang', $id_barang);
+        return $this->db->get()->row();
     }
 
     public function add($data)

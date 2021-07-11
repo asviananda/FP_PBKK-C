@@ -41,10 +41,28 @@
           </li>
 
           <li class="nav-item">
+            <a href="<?= base_url('artis') ?>" class="nav-link <?php if($this->uri->segment(1)=='artis'){echo "active";}?>">
+              <i class="nav-icon fas fa-star"></i>
+              <p>
+                Artist
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
             <a href="<?= base_url('barang') ?>" class="nav-link <?php if($this->uri->segment(1)=='barang'){echo "active";}?>">
               <i class="nav-icon fas fa-boxes"></i>
               <p>
                 Products
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="<?= base_url('gambarbarang') ?>" class="nav-link <?php if($this->uri->segment(1)=='gambarbarang'){echo "active";}?>">
+              <i class="nav-icon fas fa-image"></i>
+              <p>
+                Product Images
               </p>
             </a>
           </li>
@@ -74,9 +92,9 @@
           </li>
 
           <li class="nav-item">
-                <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>Simple Link</p>
+                <a href="<?=  base_url('admin/settings') ?>" class="nav-link">
+              <i class="nav-icon fa fa-cog"></i>
+              <p>Settings</p>
                 </a>
              </li>
           

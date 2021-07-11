@@ -20,13 +20,30 @@ class M_home extends CI_Model
         return $this->db->get()->result();
     }
 
+    public function get_all_data_artis()
+    {
+        $this->db->select('*');
+        $this->db->from('tbl_artis');
+        $this->db->order_by('id_artis', 'asc');
+        return $this->db->get()->result();
+    }
+
     public function detail_barang($id_barang)
     {
         $this->db->select('*');
         $this->db->from('tbl_barang');
         $this->db->join('tbl_kategori', 'tbl_kategori.id_kategori = tbl_barang.id_kategori', 'left');
+        $this->db->join('tbl_artis', 'tbl_artis.id_artis = tbl_barang.id_artis', 'left');
         $this->db->where('id_barang', $id_barang);
         return $this->db->get()->row();
+    }
+
+    public function gambar_barang($id_barang)
+    {
+        $this->db->select('*');
+        $this->db->from('tbl_gambar');
+        $this->db->where('id_barang', $id_barang);
+        return $this->db->get()->result();
     }
 
     public function kategori($id_kategori)
@@ -37,12 +54,29 @@ class M_home extends CI_Model
         return $this->db->get()->row();
     }
 
+    public function artis($id_artis)
+    {
+        $this->db->select('*');
+        $this->db->from('tbl_artis');
+        $this->db->where('id_artis', $id_artis);
+        return $this->db->get()->row();
+    }
+
     public function get_all_data_barang($id_kategori)
     {
         $this->db->select('*');
         $this->db->from('tbl_barang');
         $this->db->join('tbl_kategori', 'tbl_kategori.id_kategori = tbl_barang.id_kategori', 'left');
         $this->db->where('tbl_barang.id_kategori', $id_kategori);
+        return $this->db->get()->result();
+    }
+
+    public function get_all_data_barang_artis($id_artis)
+    {
+        $this->db->select('*');
+        $this->db->from('tbl_barang');
+        $this->db->join('tbl_artis', 'tbl_artis.id_artis = tbl_barang.id_artis', 'left');
+        $this->db->where('tbl_barang.id_artis', $id_artis);
         return $this->db->get()->result();
     }
 

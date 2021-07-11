@@ -25,7 +25,7 @@ class Kategori extends CI_Controller
             'nama_kategori' => $this->input->post('nama_kategori'),
         );
         $this->m_kategori->add($data);
-        $this->session->set_flashdata('pesan', 'Category Successfully Added !');
+        $this->session->set_flashdata('pesan', 'New Category Successfully Added !');
         redirect('kategori');
     }
     public function edit($id_kategori = NULL)

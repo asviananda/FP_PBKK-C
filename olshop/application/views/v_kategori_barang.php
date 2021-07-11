@@ -33,6 +33,13 @@
       
       <?php foreach ($barang as $key => $value) { ?>
       <div class="col-12 col-sm-4 col-md-4">
+      <?php echo form_open('belanja/add');
+      echo form_hidden('id', $value->id_barang);
+      echo form_hidden('qty', 1);
+      echo form_hidden('price', $value->harga);
+      echo form_hidden('name', $value->nama_barang);
+      echo form_hidden('redirect_page', str_replace('index.php/','',current_url()));
+      ?>
               <div class="card bg-light">
                 <div class="card-header text-muted border-bottom-0">
                 <h2 class="lead"><b><?= $value->nama_barang ?></b></h2>
@@ -60,9 +67,9 @@
                     <a href="#" class="btn btn-sm bg-teal">
                       <i class="fas fa-eye"></i>
                     </a>
-                    <a href="#" class="btn btn-sm btn-primary">
+                    <button type="submit" class="btn btn-sm btn-primary">
                       <i class="fas fa-cart-plus">  Add to Cart</i> 
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>

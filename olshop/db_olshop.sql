@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 06, 2021 at 12:50 PM
+-- Generation Time: Jul 11, 2021 at 02:03 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -25,33 +25,84 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_artis`
+--
+
+CREATE TABLE `tbl_artis` (
+  `id_artis` int(11) NOT NULL,
+  `nama_artis` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_artis`
+--
+
+INSERT INTO `tbl_artis` (`id_artis`, `nama_artis`) VALUES
+(1, 'BTS'),
+(2, 'ENHYPEN'),
+(3, 'NU\'EST'),
+(4, 'SEVENTEEN'),
+(5, 'TREASURE'),
+(6, 'TXT'),
+(7, 'SUNMI');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_barang`
 --
 
 CREATE TABLE `tbl_barang` (
   `id_barang` int(11) NOT NULL,
+  `id_artis` int(11) DEFAULT NULL,
   `nama_barang` varchar(255) DEFAULT NULL,
   `id_kategori` int(11) DEFAULT NULL,
   `harga` int(11) DEFAULT NULL,
   `deskripsi` mediumtext DEFAULT NULL,
-  `gambar` text DEFAULT NULL
+  `gambar` text DEFAULT NULL,
+  `berat` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_barang`
 --
 
-INSERT INTO `tbl_barang` (`id_barang`, `nama_barang`, `id_kategori`, `harga`, `deskripsi`, `gambar`) VALUES
-(1, '[BTS] Butter (SET)', 1, 460000, 'PRE-ORDER', 'butter_set.jpeg'),
-(2, '[BTS] Butter (RANDOM)', 1, 230000, 'PRE-ORDER', 'butter_random.jpeg'),
-(3, '[TXT] minisode1 : Blue Hour', 1, 230000, 'READY STOCK | RANDOM', 'minisode.jpeg'),
-(8, '[TXT] Acrylic Keyring', 5, 235000, 'RANDOM MEMBER', 'acrylic_keyring_txt.jpeg'),
-(9, '[BTS] ARMY Membership', 3, 325000, 'Membership Only', 'army_membership.jpeg'),
-(10, '[BTS] ARMY Membership Kit', 3, 180000, 'Membership Kit Only', 'army_membership_kit.jpeg'),
-(14, '[ENHYPEN] Border : Carnival (SET)', 1, 660000, 'READY STOCK', 'border_carnival.jpeg'),
-(15, '[ENHYPEN] Border : Day One', 1, 230000, 'READY STOCK | RANDOM', 'border_day_one.jpeg'),
-(16, '[BTS] Aqua Wave with BTS', 5, 310000, 'PRE-ORDER', 'botol_aquawave.jpeg'),
-(17, '[BTS] BTS Memories of 2019 DVD', 2, 825000, 'READY STOCK', 'bts_memories_2019.jpeg');
+INSERT INTO `tbl_barang` (`id_barang`, `id_artis`, `nama_barang`, `id_kategori`, `harga`, `deskripsi`, `gambar`, `berat`) VALUES
+(8, 6, 'Acrylic Keyring', 5, 235000, 'RANDOM MEMBER', 'acrylic_keyring_txt11.jpeg', 25),
+(9, 1, 'ARMY Membership', 3, 325000, 'Membership Only', 'army_membership1.jpeg', 0),
+(10, 1, 'ARMY Membership Kit', 3, 180000, 'Membership Kit Only', 'army_membership_kit11.jpeg', 600),
+(14, 2, 'Border : Carnival (SET)', 1, 660000, 'READY STOCK', 'border_carnival11.jpeg', 1400),
+(15, 2, 'Border : Day One', 1, 230000, 'READY STOCK | RANDOM', 'border_day_one11.jpeg', 290),
+(16, 1, 'Aqua Wave with BTS', 5, 310000, 'PRE-ORDER', 'botol_aquawave11.jpeg', 100),
+(17, 1, 'BTS Memories of 2019 DVD', 2, 825000, 'READY STOCK', 'bts_memories_2019111.jpeg', 500),
+(18, 2, 'GGU GGU Package', 5, 360000, 'READY STOCK', 'ggu-ggu_package22.jpeg', 400),
+(19, 4, 'Instant PC Set', 5, 210000, 'READY STOCK', 'svt_instant_pc_set11.jpeg', 150),
+(20, 6, 'The Chaos Chapter : Freeze', 1, 295000, 'READY STOCK | RANDOM', 'chaos_random.jpeg', 300);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_gambar`
+--
+
+CREATE TABLE `tbl_gambar` (
+  `id_gambar` int(11) NOT NULL,
+  `id_barang` int(11) NOT NULL,
+  `gambar` text DEFAULT NULL,
+  `ket` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_gambar`
+--
+
+INSERT INTO `tbl_gambar` (`id_gambar`, `id_barang`, `gambar`, `ket`) VALUES
+(1, 15, 'enha_1.png', 'cover enhypen-border:day one versi 1'),
+(2, 15, 'enha_2.png', 'cover enhypen-border:day one versi 2'),
+(4, 14, 'enha_31.jpg', 'cover enhypen-border:carnival versi up'),
+(8, 20, 'tcc_21.png', 'versi world'),
+(9, 20, 'tcc_11.jpg', 'versi boy'),
+(10, 20, 'tcc_31.png', 'versi you');
 
 -- --------------------------------------------------------
 
@@ -75,6 +126,27 @@ INSERT INTO `tbl_kategori` (`id_kategori`, `nama_kategori`) VALUES
 (4, 'Lightstick'),
 (5, 'Merchandise'),
 (6, 'Photobook');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_setting`
+--
+
+CREATE TABLE `tbl_setting` (
+  `id` int(11) NOT NULL,
+  `nama_toko` varchar(255) DEFAULT NULL,
+  `lokasi` int(11) DEFAULT NULL,
+  `alamat_toko` text DEFAULT NULL,
+  `no_telpon` varchar(15) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_setting`
+--
+
+INSERT INTO `tbl_setting` (`id`, `nama_toko`, `lokasi`, `alamat_toko`, `no_telpon`) VALUES
+(1, 'Haibe Shop', NULL, 'ITS Sukolilo', '082316351845');
 
 -- --------------------------------------------------------
 
@@ -104,16 +176,34 @@ INSERT INTO `tbl_user` (`id_user`, `nama_user`, `username`, `password`, `level_u
 --
 
 --
+-- Indexes for table `tbl_artis`
+--
+ALTER TABLE `tbl_artis`
+  ADD PRIMARY KEY (`id_artis`);
+
+--
 -- Indexes for table `tbl_barang`
 --
 ALTER TABLE `tbl_barang`
   ADD PRIMARY KEY (`id_barang`);
 
 --
+-- Indexes for table `tbl_gambar`
+--
+ALTER TABLE `tbl_gambar`
+  ADD PRIMARY KEY (`id_gambar`);
+
+--
 -- Indexes for table `tbl_kategori`
 --
 ALTER TABLE `tbl_kategori`
   ADD PRIMARY KEY (`id_kategori`);
+
+--
+-- Indexes for table `tbl_setting`
+--
+ALTER TABLE `tbl_setting`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `tbl_user`
@@ -126,16 +216,34 @@ ALTER TABLE `tbl_user`
 --
 
 --
+-- AUTO_INCREMENT for table `tbl_artis`
+--
+ALTER TABLE `tbl_artis`
+  MODIFY `id_artis` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT for table `tbl_barang`
 --
 ALTER TABLE `tbl_barang`
-  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `tbl_gambar`
+--
+ALTER TABLE `tbl_gambar`
+  MODIFY `id_gambar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tbl_kategori`
 --
 ALTER TABLE `tbl_kategori`
   MODIFY `id_kategori` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `tbl_setting`
+--
+ALTER TABLE `tbl_setting`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_user`

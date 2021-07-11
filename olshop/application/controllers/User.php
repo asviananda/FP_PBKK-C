@@ -29,7 +29,7 @@ class User extends CI_Controller
             'level_user' => $this->input->post('level_user'),
         );
         $this->m_user->add($data);
-        $this->session->set_flashdata('pesan', 'User Successfully Added !');
+        $this->session->set_flashdata('pesan', 'New User Successfully Added !');
         redirect('user');
     }
 

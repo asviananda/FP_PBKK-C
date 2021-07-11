@@ -8,6 +8,7 @@ class Barang extends CI_Controller
         parent::__construct();
         $this->load->model('m_barang');
         $this->load->model('m_kategori');
+        $this->load->model('m_artis');
     }
 
     public function index()
@@ -22,48 +23,225 @@ class Barang extends CI_Controller
 
     public function add()
     {
-        $nama_barang = $this->input->post('nama_barang');
-        $id_kategori = $this->input->post('id_kategori');
-        $harga = $this->input->post('harga');
-        $deskripsi = $this->input->post('deskripsi');
-        $gambar = $_FILES['gambar']['name'];
-        if ($gambar = ''){}else{
-            $config ['upload_path'] = './uploads';
-            $config ['allowed_types'] = 'jpg|jpeg|png|gif';
+        $this->form_validation->set_rules(
+            'id_artis', 
+            'Artist', 
+            'required',
+            array('required' => '%s Can Not be Empty!')
+        );
 
-            $this->load->library('upload', $config);
-            if(!$this->upload->do_upload('gambar')){
-                echo "Upload Failed!";
+        $this->form_validation->set_rules(
+            'nama_barang', 
+            'Product Name', 
+            'required',
+            array('required' => '%s Can Not be Empty!')
+        );
+
+        $this->form_validation->set_rules(
+            'id_kategori', 
+            'Category', 
+            'required',
+            array('required' => '%s Can Not be Empty!')
+        );
+
+        $this->form_validation->set_rules(
+            'harga', 
+            'Price', 
+            'required',
+            array('required' => '%s Can Not be Empty!')
+        );
+
+        $this->form_validation->set_rules(
+            'berat', 
+            'Weight', 
+            'required',
+            array('required' => '%s Can Not be Empty!')
+        );
+
+        $this->form_validation->set_rules(
+            'deskripsi', 
+            'Description', 
+            'required',
+            array('required' => '%s Can Not be Empty!')
+        );
+
+        if($this->form_validation->run() == TRUE)
+        {
+            $config['upload_path'] = './assets/gambar/';
+            $config['allowed_types'] = 'jpeg|jpg|png';
+            $config['max_size']     = '2000';
+            $this->upload->initialize($config);
+            $field_name = "gambar";
+            if(!$this->upload->do_upload($field_name))
+            {
+                $data = array(
+                    'title' => 'Add Product',
+                    'artis' => $this->m_artis->get_all_data(),
+                    'kategori' => $this->m_kategori->get_all_data(),
+                    'error_upload' => $this->upload->display_errors(),
+                    'isi' => 'barang/v_add',
+                );
+                
+                $this->load->view('layout/v_wrapper_backend', $data, FALSE);
             }else{
-                $gambar=$this->upload->data('file_name');
+                $upload_data = array('uploads' => $this->upload->data());
+                $config['image_library'] = 'gd2';
+                $config['source_image'] = '.assets/gambar/' .$upload_data['uploads']['file_name'];
+                $this->load->library('image_lib', $config);
+
+                $data = array(
+                    'id_artis' => $this->input->post('id_artis'),
+                    'nama_barang' => $this->input->post('nama_barang'),
+                    'id_kategori' => $this->input->post('id_kategori'),
+                    'harga' => $this->input->post('harga'),
+                    'berat' => $this->input->post('berat'),
+                    'deskripsi' => $this->input->post('deskripsi'),
+                    'gambar' => $upload_data['uploads']['file_name'],
+                );
+
+                $this->m_barang->add($data);
+                $this->session->set_flashdata('pesan', 'New Product Successfully Added !');
+        redirect('barang');
             }
         }
 
         $data = array(
-            'nama_barang'   => $nama_barang,
-            'id_kategori'   => $id_kategori,
-            'harga'         => $harga,
-            'deskripsi'     => $deskripsi,
-            'gambar'        => $gambar
+            'title' => 'Add Product',
+            'artis' => $this->m_artis->get_all_data(),
+            'kategori' => $this->m_kategori->get_all_data(),
+            'isi' => 'barang/v_add',
         );
         
-        $this->m_barang->add($data, 'tbl_barang');
-        //$this->session->set_flashdata('pesan', 'Product Successfully Added !');
-        // $data = array(
-        //     'title' => 'Add',
-        //     'isi' => 'barang/v_add',
-        // );
-        //$this->load->view('layout/v_wrapper_backend', $data, FALSE);
+        $this->load->view('layout/v_wrapper_backend', $data, FALSE);
+    }
+
+    public function edit($id_barang = NULL)
+    {
+        $this->form_validation->set_rules(
+            'id_artis', 
+            'Artist', 
+            'required',
+            array('required' => '%s Can Not be Empty!')
+        );
+
+        $this->form_validation->set_rules(
+            'nama_barang', 
+            'Product Name', 
+            'required',
+            array('required' => '%s Can Not be Empty!')
+        );
+
+        $this->form_validation->set_rules(
+            'id_kategori', 
+            'Category', 
+            'required',
+            array('required' => '%s Can Not be Empty!')
+        );
+
+        $this->form_validation->set_rules(
+            'harga', 
+            'Price', 
+            'required',
+            array('required' => '%s Can Not be Empty!')
+        );
+
+        $this->form_validation->set_rules(
+            'berat', 
+            'Weight', 
+            'required',
+            array('required' => '%s Can Not be Empty!')
+        );
+
+        $this->form_validation->set_rules(
+            'deskripsi', 
+            'Description', 
+            'required',
+            array('required' => '%s Can Not be Empty!')
+        );
+
+        if($this->form_validation->run() == TRUE)
+        {
+            $config['upload_path'] = './assets/gambar/';
+            $config['allowed_types'] = 'jpeg|jpg|png';
+            $config['max_size']     = '2000';
+            $this->upload->initialize($config);
+            $field_name = "gambar";
+            if(!$this->upload->do_upload($field_name))
+            {
+                $data = array(
+                    'title' => 'Edit Product',
+                    'artis' => $this->m_artis->get_all_data(),
+                    'kategori' => $this->m_kategori->get_all_data(),
+                    'barang' => $this->m_barang->get_data($id_barang),
+                    'error_upload' => $this->upload->display_errors(),
+                    'isi' => 'barang/v_edit',
+                );
+                
+                $this->load->view('layout/v_wrapper_backend', $data, FALSE);
+            }else{
+                $barang = $this->m_barang->get_data($id_barang);
+                if ($barang->gambar != "")
+                {
+                    unlink('./assets/gambar/'. $barang->gambar);
+                }
+
+                $upload_data = array('uploads' => $this->upload->data());
+                $config['image_library'] = 'gd2';
+                $config['source_image'] = '.assets/gambar/' .$upload_data['uploads']['file_name'];
+                $this->load->library('image_lib', $config);
+
+                $data = array(
+                    'id_barang' => $id_barang,
+                    'id_artis' => $this->input->post('id_artis'),
+                    'nama_barang' => $this->input->post('nama_barang'),
+                    'id_kategori' => $this->input->post('id_kategori'),
+                    'harga' => $this->input->post('harga'),
+                    'berat' => $this->input->post('berat'),
+                    'deskripsi' => $this->input->post('deskripsi'),
+                    'gambar' => $upload_data['uploads']['file_name'],
+                );
+
+                $this->m_barang->edit($data);
+                $this->session->set_flashdata('pesan', 'Product Successfully Edited !');
+                redirect('barang');
+            }
+            $data = array(
+                'id_barang' => $id_barang,
+                'id_artis' => $this->input->post('id_artis'),
+                'nama_barang' => $this->input->post('nama_barang'),
+                'id_kategori' => $this->input->post('id_kategori'),
+                'harga' => $this->input->post('harga'),
+                'berat' => $this->input->post('berat'),
+                'deskripsi' => $this->input->post('deskripsi'),
+                'gambar' => $upload_data['uploads']['file_name'],
+            );
+
+            $this->m_barang->edit($data);
+            $this->session->set_flashdata('pesan', 'Product Successfully Edited !');
+            redirect('barang');
+        }
+
+        $data = array(
+            'title' => 'Edit Product',
+            'artis' => $this->m_artis->get_all_data(),
+            'kategori' => $this->m_kategori->get_all_data(),
+            'barang' => $this->m_barang->get_data($id_barang),
+            'isi' => 'barang/v_edit',
+        );
+        
+        $this->load->view('layout/v_wrapper_backend', $data, FALSE);
+    }
+
+    public function delete($id_barang= NULL)
+    {
+        $barang = $this->m_barang->get_data($id_barang);
+        if ($barang->gambar != "")
+        {
+            unlink('./assets/gambar/'. $barang->gambar);
+        }
+        $data = array('id_barang' => $id_barang);
+        $this->m_barang->delete($data);
+        $this->session->set_flashdata('pesan', 'Product Successfully Deleted !');
         redirect('barang');
-    }
-
-    public function edit($id = NULL)
-    {
-        
-    }
-
-    public function delete($id = NULL)
-    {
-        
     }
 }

@@ -30,6 +30,7 @@
 <div class="card card-solid">
     <div class="card-body pb-0">
       <div class="row d-flex align-items-stretch">
+      
       <?php foreach ($barang as $key => $value) { ?>
       <div class="col-12 col-sm-4 col-md-4">
       <?php echo form_open('belanja/add');
@@ -42,12 +43,13 @@
               <div class="card bg-light">
                 <div class="card-header text-muted border-bottom-0">
                 <h2 class="lead"><b><?= $value->nama_barang ?></b></h2>
+                <p class="text-muted text-sm"><b>Artist: </b><?= $value->nama_artis ?></p>
                 </div>
                 <div class="card-body pt-0">
                   <div class="row">
                   
                     <div class="col-12 text-center">
-                      <img src="<?= base_url('assets/gambar/'. $value->gambar) ?>" alt="" width="auto" height="auto" class="img-square img-fluid">
+                      <img src="<?= base_url('assets/gambar/'. $value->gambar) ?>" alt="" width="180px" height="120px" class="img-square img-fluid">
                     </div>
                   </div>
                 </div>
@@ -62,40 +64,18 @@
                 </div>
                 <div class="card-footer">
                   <div class="text-right">
-                    <a href="<?= base_url('home/detail_barang/'.$value->id_barang) ?>" class="btn btn-sm bg-teal">
+                    <a href="#" class="btn btn-sm bg-teal">
                       <i class="fas fa-eye"></i>
                     </a>
-                    <button type="submit" class="btn btn-sm swalDefaultSuccess btn-primary">
+                    <button type="submit" class="btn btn-sm btn-primary">
                       <i class="fas fa-cart-plus">  Add to Cart</i> 
                     </button>
                   </div>
                 </div>
               </div>
-              <?php echo form_close(); ?>
             </div>
-<?php } ?>
+            <?php } ?>
 
       </div>
     </div>
 </div>
-
-<!-- SweetAlert2 -->
-<script src="<?php base_url() ?>template/plugins/sweetalert2/sweetalert2.min.js"></script>
-
-<script type="text/javascript">
-  $(function() {
-    const Toast = Swal.mixin({
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      timer: 3000
-    });
-
-    $('.swalDefaultSuccess').click(function() {
-      Toast.fire({
-        icon: 'success',
-        title: ' Product Added to Cart'
-      })
-    });
-  });
-</script>
